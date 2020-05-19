@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "showdown": "^1.9.0"
+    "html-minifier": "^4.0.0",
+    "pretty": "^2.0.0",
+    "showdown": "^1.9.1"
+  },
+  "scripts": {
+    "convert" : "node ./src/index.js"
   }
 }
