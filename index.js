@@ -2,17 +2,17 @@
 const fs = require('fs')
 const path = require('path')
 const { mdToHtml } = require('./src/convert')
-
+const argv = process.argv
 let infile = ''
 let outfile = ''
-const argv = process.argv
 
-if (argv.length < 3) {
+const argvlen = 3;
+if (argv.length < argvlen) {
   console.log('Missing argument for input markdown file.')
   return
 } else {
-  infile = path.resolve(argv[2])
-  outfile = (argv.length >= 4)? path.resolve(argv[3]) : /(?:.+\/)*\/?(.*)\..*/g.exec(infile)[1] + '.html'
+  infile = path.resolve(argv[argvlen - 1])
+  outfile = (argv.length > argvlen)? path.resolve(argv[argvlen]) : /(?:.+\/)*\/?(.*)\..*/g.exec(infile)[1] + '.html'
 
   if (!infile) {
     console.log('Markdown file is not found')
@@ -35,7 +35,7 @@ try {
     version: 'v1.0',
   }
   const mdContent = fs.readFileSync(infile).toString()
-  const matches = mdContent.match(/\[comment\]:\s*#\s*\((.*:.*)\)/g)
+  const matches = mdContent.match(/\[comment\]:\s*#\s*\((.*:.*)\)/g) || []
   // extract the document information from the markdown
   // [comment]: # (title : <Your Project Name>)
   // [comment]: # (author : <Your Name>)
