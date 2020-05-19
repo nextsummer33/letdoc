@@ -5,6 +5,6 @@
     "showdown": "^1.9.1"
   },
   "scripts": {
-    "convert" : "node ./src/index.js"
+    "convert" : "node index.js"
   }
 }
