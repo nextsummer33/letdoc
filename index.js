@@ -9,12 +9,9 @@ const argv = process.argv
 if (argv.length < 3) {
   console.log('Missing argument for input markdown file.')
   return
-} else if (argv.length < 4) {
-  console.log('Missing argument for output file.')
-  return
 } else {
   infile = path.resolve(argv[2])
-  outfile = path.resolve(argv[3])
+  outfile = (argv.length >= 4)? path.resolve(argv[3]) : /(?:.+\/)*\/?(.*)\..*/g.exec(infile)[1] + '.html'
 
   if (!infile) {
     console.log('Markdown file is not found')

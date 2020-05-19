@@ -1,10 +1,21 @@
 {
+  "name": "md2html",
+  "version": "1.0.0",
+  "description": "Convert the markdown file into html file",
+  "main": "index.js",
   "dependencies": {
     "html-minifier": "^4.0.0",
     "pretty": "^2.0.0",
     "showdown": "^1.9.1"
   },
   "scripts": {
-    "convert" : "node index.js"
-  }
+    "convert": "node index.js"
+  },
+  "keywords": [
+    "markdown",
+    "html",
+    "github"
+  ],
+  "author": "blackrow33",
+  "license": "MIT"
 }
