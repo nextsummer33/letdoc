@@ -63,9 +63,17 @@ async function mdToHtml(
 
   const htmlContent = htmlMinifier(templateData, {
     html5: true,
+    collapseInlineTagWhitespace: true,
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
     removeComments: true,
     minifyCSS: true,
     minifyJS: true,
+    removeRedundantAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    sortAttributes: true,
+    sortClassName: true
   })
   return htmlContent
 }
