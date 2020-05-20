@@ -6,27 +6,22 @@ const argv = process.argv
 let infile = ''
 let outfile = ''
 
-const argvlen = 3;
+const argvlen = 3
 if (argv.length < argvlen) {
   console.log('Missing argument for input markdown file.')
   return
 } else {
   infile = path.resolve(argv[argvlen - 1])
-  outfile = (argv.length > argvlen)? path.resolve(argv[argvlen]) : /(?:.+\/)*\/?(.*)\..*/g.exec(infile)[1] + '.html'
+  outfile =
+    argv.length > argvlen
+      ? path.resolve(argv[argvlen])
+      : /(?:.+\/)*\/?(.*)\..*/g.exec(infile)[1] + '.html'
 
   if (!infile) {
     console.log('Markdown file is not found')
     return
   }
 }
-
-const capitialize = (txt) => {
-  return txt
-    .split(' ')
-    .map((s) => s[0].toUpperCase() + s.substring(1, s.length))
-    .join(' ')
-}
-
 
 try {
   metadata = {
@@ -45,14 +40,15 @@ try {
     for (let i = 0; i < matches.length; i++) {
       const pattern = matches[i]
       const norm = pattern.trim().toLowerCase()
-      if (norm.indexOf('title') > -1) {
-        // Capitialize each word for the title
-        metadata.title = capitialize(norm.replace(regx, '$1').trim())
-      } else if (norm.indexOf('author') > -1) {
-        metadata.author = capitialize(norm.replace(regx, '$1').trim())
-      } else if (norm.indexOf('version') > -1) {
-        metadata.version = norm.replace(regx, '$1').trim()
-      }
+      const metaname =
+        norm.indexOf('title') > -1
+          ? 'title'
+          : norm.indexOf('author') > -1
+          ? 'author'
+          : norm.indexOf('version')
+          ? 'version'
+          : ''
+      metaname && (metadata[metaname] = norm.replace(regx, '$1').trim())
     }
   }
 

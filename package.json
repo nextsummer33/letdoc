@@ -13,11 +13,15 @@
     "md2html": "./index.js"
   },
   "scripts": {
-    "convert": "node index.js"
+    "convert": "node index.js",
+    "test": "jest"
   },
   "keywords": [
     "markdown",
     "html",
     "github"
-  ]
+  ],
+  "devDependencies": {
+    "jest": "^26.0.1"
+  }
 }
