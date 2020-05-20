@@ -2,17 +2,17 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer')
 const { mdToHtml } = require('./src/convert')
-const commander = require('commander');
+const commander = require('commander')
 
 const argv = process.argv
 let infile = ''
 let outfile = ''
 const argvlen = 3
 let mermaidConfig = {
-  theme: 'default'
-};
+  theme: 'default',
+}
 const myCSS = ''
 
 const error = (msg) => {
@@ -89,7 +89,9 @@ _asyncToGenerator(function* () {
       const page = yield browser.newPage()
       page.setViewport({ width, height, deviceScaleFactor })
       yield page.goto(`file://${path.join(__dirname, 'index.html')}`)
-      yield page.evaluate(`document.body.style.background = '${backgroundColor}'`)
+      yield page.evaluate(
+        `document.body.style.background = '${backgroundColor}'`
+      )
 
       for (let i = 0; i < mermaidCtx.length; i++) {
         const ctx = mermaidCtx[i].replace(/^```mermaid\n*([^`]+)\n*```/, '$1')
@@ -97,7 +99,10 @@ _asyncToGenerator(function* () {
           '#container',
           function (container, definition, mermaidConfig, myCSS) {
             window.mermaid.initialize(mermaidConfig)
-            container.innerHTML = window.mermaid.mermaidAPI.render('graphDiv', definition)
+            container.innerHTML = window.mermaid.mermaidAPI.render(
+              'diagram',
+              definition
+            )
           },
           ctx,
           mermaidConfig,
@@ -105,12 +110,18 @@ _asyncToGenerator(function* () {
         )
 
         const svg = yield page.$eval('#container', function (container) {
-          const react = container.firstChild.getBoundingClientRect();
-          const clip = { x: Math.floor(react.left), y: Math.floor(react.top), width: Math.ceil(react.width), height: Math.ceil(react.height) };
-          container.firstChild.style.height = ( clip.height + 60 ) + 'px';
-          container.firstChild.style.width = '100%';
-          container.firstChild.style.maxWidth = '';
-          return container.innerHTML;
+          const react = container.firstChild.getBoundingClientRect()
+          const clip = {
+            x: Math.floor(react.left),
+            y: Math.floor(react.top),
+            width: Math.ceil(react.width),
+            height: Math.ceil(react.height),
+          }
+          container.firstChild.style.height = clip.height + 60 + 'px'
+          container.firstChild.style.width = '100%'
+          container.firstChild.style.maxWidth = ''
+          // container.firstChild.style.font.size = '12px'
+          return container.innerHTML
         })
 
         mdContent = mdContent.replace(/```mermaid[^`]*```/, svg)
