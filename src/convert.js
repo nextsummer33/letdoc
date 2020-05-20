@@ -44,6 +44,7 @@ async function mdToHtml(
     console.log(error)
     return ''
   }
+
   // substitute the template variable with actual content
   templateData = templateData.replace(/{{doc_title}}/g, capitializeWords(metadata.title))
   templateData = templateData.replace(/{{doc_version}}/g, metadata.version)

@@ -5,8 +5,12 @@
   "author": "blackrow33",
   "license": "MIT",
   "dependencies": {
+    "@mermaid-js/mermaid-cli": "^8.5.1-2",
+    "chalk": "^4.0.0",
+    "commander": "^5.1.0",
     "html-minifier": "^4.0.0",
     "pretty": "^2.0.0",
+    "puppeteer": "^3.1.0",
     "showdown": "^1.9.1"
   },
   "bin": {
