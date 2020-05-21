@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const commander = require('commander')
-const mermaidPipeline = require('./src/pipelines/mermaid/mermaidPipeline')
+const { mermaidPipeline, chartjsPipeline } = require('./src/pipelines')
 const { mdToHtml } = require('./src/convert')
 const pkg = require('./package.json')
 
@@ -79,6 +79,11 @@ const main = async () => {
       deviceScaleFactor: parseInt(scale || 1, 10),
       css: myCSS,
       config: configFile || { theme: mermiadTheme }
+    })
+    mdContent = await chartjsPipeline(mdContent, {
+      width: 900,
+      height: 400,
+      deviceScaleFactor: parseInt(scale || 1, 10),
     })
     // Convert the markdown into html
     const htmlContent = await mdToHtml(mdContent, {

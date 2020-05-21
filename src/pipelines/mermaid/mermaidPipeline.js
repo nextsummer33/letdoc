@@ -15,7 +15,7 @@ async function mermaidPipeline(
   // Get all the mermaid code block in the markdown content
   const mermaidCtx = mdContent.match(/```mermaid\n*([^`]+)\n*```/g)
 
-  if (mermaidCtx && mermaidCtx.length > 1) {
+  if (mermaidCtx && mermaidCtx.length) {
     // Running a puppeteer and headless chromiumn
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
