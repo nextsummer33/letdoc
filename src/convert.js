@@ -59,10 +59,11 @@ async function mdToHtml(
     converter.makeHtml(mdContent)
   )
   // pretty the html since markdown is not with same indent depth as that of template
-  templateData = pretty(templateData)
+  // templateData = pretty(templateData)
 
   const htmlContent = htmlMinifier(templateData, {
     html5: true,
+    collapseBooleanAttributes: true,
     collapseInlineTagWhitespace: true,
     collapseWhitespace: true,
     collapseBooleanAttributes: true,

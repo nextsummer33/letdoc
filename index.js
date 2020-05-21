@@ -50,8 +50,7 @@ const main = async () => {
       version: 'v1.0',
     }
     let mdContent = fs.readFileSync(infile).toString()
-    // Find all metadata comment in the header
-    const matches = mdContent.match(/\[comment\]:\s*#\s*\((.*:.*)\)/g) || []
+
     // Replace the mardown mermaid code block with svg images
     const mermaidCtx = mdContent.match(/```mermaid\n*([^`]+)\n*```/g)
 
@@ -96,6 +95,8 @@ const main = async () => {
       browser.close()
     }
 
+    // Find all metadata comment in the header
+    const matches = mdContent.match(/\[comment\]:\s*#\s*\((.*:.*)\)/g) || []
     // extract the document information from the markdown
     // [comment]: # (title : <Your Project Name>)
     // [comment]: # (author : <Your Name>)
@@ -105,7 +106,7 @@ const main = async () => {
       for (let i = 0; i < matches.length; i++) {
         const norm = matches[i].trim().toLowerCase()
         const metaname = ['title', 'author', 'version'].find((t) => {
-          norm.indexOf(t) > -1 ? t : ''
+          return norm.indexOf(t) > -1 ? t : ''
         })
         metaname && (metadata[metaname] = norm.replace(regx, '$1').trim())
       }
