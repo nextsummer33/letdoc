@@ -20,7 +20,7 @@ async function mermaidPipeline(
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     page.setViewport({ width, height, deviceScaleFactor })
-    await page.goto(`file://${path.join(process.cwd(), 'index.html')}`)
+    await page.goto(`file://${path.join(__dirname, 'index.html')}`)
     await page.evaluate(`document.body.style.background = 'transparent'`)
 
     for (let i = 0; i < mermaidCtx.length; i++) {

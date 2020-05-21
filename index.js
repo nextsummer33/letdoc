@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const commander = require('commander')
-const mermaidPipeline = require('./src/mermaidPipeline')
+const mermaidPipeline = require('./src/pipelines/mermaid/mermaidPipeline')
 const { mdToHtml } = require('./src/convert')
 const pkg = require('./package.json')
 
