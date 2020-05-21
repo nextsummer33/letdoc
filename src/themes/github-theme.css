@@ -3,13 +3,10 @@ body {
   line-height: 1.5;
   color: #111;
   background-color: white;
+  text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   padding: 30px 0;
-}
-
-svg {
-  font-size: 11px;
-  line-height: 1.1;
+  font-family: Helvetica, 'Open Sans', Arial, sans-serif;
 }
 
 @media only screen and (max-width: 600px) {
@@ -54,14 +51,11 @@ svg {
 }
 
 body #content {
-  margin: 0px;
   max-width: 900px;
   border: 1px solid #e1e4e8;
   padding: 10px 20px;
   border-radius: 2px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
+  margin: auto
 }
 
 hr {

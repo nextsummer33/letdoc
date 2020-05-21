@@ -6,12 +6,6 @@
 
 Here we will show an mermaid flow diagram by markdown codeblock
 
-```mermaid
-graph TD
-    Start --> Stop
-```
-
-
 example 1:
 
 ```mermaid

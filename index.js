@@ -2,18 +2,50 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const puppeteer = require('puppeteer')
-const { mdToHtml } = require('./src/convert')
 const commander = require('commander')
+const mermaidPipeline = require('./src/mermaidPipeline')
+const { mdToHtml } = require('./src/convert')
+const pkg = require('./package.json')
+
+commander
+  .version(pkg.version)
+  .option(
+    '-t, --template [template]',
+    'The template layout of gernerated HTML file, could be asqi-glp, mocert-glp. Optional. Default: asqi-glp',
+    /^asqi-glp|mocert-glp|none$/,
+    'asqi-glp'
+  )
+  .option(
+    '-t, --template-theme [templateTheme]',
+    'Theme of the flavor style, could be github, dark or neutral. Optional. Default: github',
+    /^github|dark|neutral$/,
+    'github'
+  )
+  .option(
+    '-mt, --mermaid-theme [mermiadTheme]',
+    'Theme of the chart, could be default, forest, dark or neutral. Optional. Default: default',
+    /^default|forest|dark|neutral$/,
+    'default'
+  )
+  .option(
+    '-c, --configFile [configFile]',
+    'JSON configuration file for mermaid. Optional'
+  )
+  .option('-C, --cssFile [cssFile]', 'CSS file for the page. Optional')
+  .option(
+    '-s, --scale [scale]',
+    'Puppeteer scale factor, default 1. Optional',
+    '1'
+  )
+  .parse(process.argv)
+
+let { template, templateTheme, mermiadTheme, configFile, scale } = commander
 
 const argv = process.argv
-let infile = ''
-let outfile = ''
 const argvlen = 3
-let mermaidConfig = {
-  theme: 'default',
-}
-const myCSS = ''
+const myCSS = 'body { font: 14px arial; }'
+let input = ''
+let output = ''
 
 const error = (msg) => {
   console.log(chalk.red(`\n${msg}\n`))
@@ -21,105 +53,41 @@ const error = (msg) => {
 }
 
 // normalize args
-const width = 1280
-const height = 800
-const scale = 1
-const backgroundColor = 'white'
-const deviceScaleFactor = parseInt(scale || 1, 10)
 
 const main = async () => {
-
   if (argv.length < argvlen) {
     error('Missing argument for input markdown file.')
   } else {
-    infile = path.resolve(argv[argvlen - 1])
-    outfile =
+    input = path.resolve(argv[argvlen - 1])
+    if (!fs.existsSync(input)) {
+      error('Markdown input file is not found.')
+    }
+    output =
       argv.length > argvlen
         ? path.resolve(argv[argvlen])
-        : /(?:.+\/)*\/?(.*)\..*/g.exec(infile)[1] + '.html'
-
-    if (!fs.existsSync(infile)) {
-      error('Markdown file is not found.')
-    }
+        : /(?:.+\/)*\/?(.*)\..*/g.exec(input)[1] + '.html'
   }
 
   try {
-    metadata = {
-      title: 'My project',
-      author: 'Your name',
-      version: 'v1.0',
-    }
-    let mdContent = fs.readFileSync(infile).toString()
+    let mdContent = fs.readFileSync(input).toString()
 
-    // Replace the mardown mermaid code block with svg images
-    const mermaidCtx = mdContent.match(/```mermaid\n*([^`]+)\n*```/g)
+    // Update the markdown content before convert into html
+    // convert mermaid code into svg html element
+    mdContent = await mermaidPipeline(mdContent, {
+      width: 900,
+      height: 900,
+      deviceScaleFactor: parseInt(scale || 1, 10),
+      css: myCSS,
+      config: configFile || { theme: mermiadTheme }
+    })
+    // Convert the markdown into html
+    const htmlContent = await mdToHtml(mdContent, {
+      template: template + '.html',
+      theme: templateTheme + '-theme.css',
+    })
 
-    if (mermaidCtx && mermaidCtx.length > 1) {
-      const browser = await puppeteer.launch()
-      const page = await browser.newPage()
-      page.setViewport({ width, height, deviceScaleFactor })
-      await page.goto(`file://${path.join(__dirname, 'index.html')}`)
-      await page.evaluate(
-        `document.body.style.background = '${backgroundColor}'`
-      )
-
-      for (let i = 0; i < mermaidCtx.length; i++) {
-        const ctx = mermaidCtx[i].replace(/^```mermaid\n*([^`]+)\n*```/, '$1')
-        await page.$eval(
-          '#container',
-          function (container, definition, mermaidConfig) {
-            const mermaid = window.mermaid
-            mermaid.initialize(mermaidConfig)
-            container.innerHTML = mermaid.mermaidAPI.render(
-              'diagram',
-              definition
-            )
-          },
-          ctx,
-          mermaidConfig
-        )
-        // fixing the svg height problem when generate sequence diagram,
-        // force the height of the diagram to the bounds of svg
-        const svg = await page.$eval('#container', (container) => {
-          const child = container.firstChild
-          const height = child.getBoundingClientRect().height
-          child.style.height = height + 60 + 'px'
-          child.style.width = '100%'
-          child.style.maxWidth = ''
-          return container.innerHTML
-        })
-
-        mdContent = mdContent.replace(/```mermaid[^`]*```/, `<div>${svg}</div>`)
-      }
-
-      browser.close()
-    }
-
-    // Find all metadata comment in the header
-    const matches = mdContent.match(/\[comment\]:\s*#\s*\((.*:.*)\)/g) || []
-    // extract the document information from the markdown
-    // [comment]: # (title : <Your Project Name>)
-    // [comment]: # (author : <Your Name>)
-    // [comment]: # (version : <Document Version>)
-    if (matches.length) {
-      const regx = /\[comment\]:\s*#\s*\(.*:(.*)\)/
-      for (let i = 0; i < matches.length; i++) {
-        const norm = matches[i].trim().toLowerCase()
-        const metaname = ['title', 'author', 'version'].find((t) => {
-          return norm.indexOf(t) > -1 ? t : ''
-        })
-        metaname && (metadata[metaname] = norm.replace(regx, '$1').trim())
-      }
-    }
-
-    const htmlContent = await mdToHtml(
-      mdContent,
-      undefined,
-      undefined,
-      metadata
-    )
     fs.writeFile(
-      outfile,
+      output,
       htmlContent,
       { encoding: 'utf8', flag: 'w' },
       (err) => {
@@ -127,7 +95,7 @@ const main = async () => {
           error(error)
         } else {
           console.log(
-            `\nConverted HTML file is generated at '${chalk.green(outfile)}'\n`
+            `\nConverted HTML file is generated at '${chalk.green(output)}'\n`
           )
           process.exit(0)
         }
