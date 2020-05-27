@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
 const path = require('path')
+const htmlMinifier = require('html-minifier').minify
 
 async function mermaidPipeline(
   mdContent,
@@ -53,9 +54,24 @@ async function mermaidPipeline(
         css
       )
       // Get the svg content out
-      const svg = await page.$eval('#container', (container) => {
+      svg = await page.$eval('#container', (container) => {
         return container.innerHTML
       })
+
+      svg = htmlMinifier(svg, {
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true,
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        sortAttributes: true,
+        sortClassName: true
+      })
+
+      svg.replace(/(<svg.+)width=".+"(.+)/g, '$1width="100%"$2')
 
       mdContent = mdContent.replace(
         /```mermaid[^`]*```/,

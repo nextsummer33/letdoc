@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const commander = require('commander')
-const { mermaidPipeline, chartjsPipeline } = require('./src/pipelines')
+const { mermaidPipeline, chartjsPipeline, svgoPipeline } = require('./src/pipelines')
 const { mdToHtml } = require('./src/convert')
 const pkg = require('./package.json')
 
@@ -36,6 +36,11 @@ commander
     '-s, --scale [scale]',
     'Puppeteer scale factor, default 1. Optional',
     '1'
+  )
+  .option(
+    '-e, --embedded [embbed]',
+    'Embedded all the assets into HTML output file',
+    true
   )
   .parse(process.argv)
 
@@ -85,11 +90,15 @@ const main = async () => {
       height: 400,
       deviceScaleFactor: parseInt(scale || 1, 10),
     })
+
+    mdContent = await svgoPipeline(mdContent)
+
     // Convert the markdown into html
     const htmlContent = await mdToHtml(mdContent, {
       template: template + '.html',
       theme: templateTheme + '-theme.css',
     })
+
 
     fs.writeFile(
       output,

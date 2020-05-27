@@ -1,5 +1,25 @@
 const puppeteer = require('puppeteer')
 const path = require('path')
+// const { execFile } = require('child_process')
+// const pngout = require('pngout-bin')
+const fs = require('fs')
+
+
+function setup() {
+  const tmpPath = path.join(process.cwd(), 'build', 'tmp')
+  if (fs.existsSync(tmpPath)) {
+    fs.rmdirSync(tmpPath)
+  }
+
+  fs.mkdirSync(tmpPath);
+}
+
+function teardown() {
+  const tmpPath = path.join(process.cwd(), 'build', 'tmp')
+  if (fs.existsSync(tmpPath)) {
+    fs.rmdirSync(tmpPath)
+  }
+}
 
 async function chartjsPipeline(
   mdContent,
@@ -10,6 +30,8 @@ async function chartjsPipeline(
     deviceScaleFactor: 1
   }
 ) {
+  setup();
+
   const { config, width, height, deviceScaleFactor } = options
   // Get all the context code block for chartjs in the markdown content
   const context = mdContent.match(/```js\schartjs\n*([^`]+)\n*```/g)
@@ -29,20 +51,11 @@ async function chartjsPipeline(
     for (let i = 0; i < context.length; i++) {
       // extract the context in the chartjs code block
       const code = context[i].replace(/```js\schartjs\n*([^`]+)\n*```/, '$1')
-      // evaluate the code in the page
+      // Evaluate the chartjs initialization code on the page
       page.evaluate(code)
-      const imgData = await page.$eval('canvas', (canvas, shrink) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            let data = canvas.toDataURL()
-            if (data) {
-              resolve(data)
-            } else {
-              reject('Empty canvas context after running the chartjs')
-            }
-          }, 500);
-        })
-      })
+      // wait for the chart appears
+      await page.waitFor(500)
+      const imgData = await page.$eval('canvas', (canvas) => canvas.toDataURL());
 
       mdContent = mdContent.replace(
         /```js\schartjs[^`]*```/,
@@ -53,6 +66,7 @@ async function chartjsPipeline(
     browser.close()
   }
 
+  teardown()
   return mdContent
 }
 

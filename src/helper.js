@@ -13,6 +13,19 @@ const capitializeWords = (txt) => {
     .join(' ')
 }
 
+const delay = (duration, callback) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (callback instanceof Promise) {
+        callback.then(resolve).catch(reject)
+      } else {
+        resolve(callback())
+      }
+    }, duration);
+  })
+}
+
 module.exports = {
   capitializeWords,
+  delay
 }
