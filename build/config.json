@@ -1,0 +1,136 @@
+{
+  "plugins": [
+    {
+      "removeDoctype": false
+    },
+    {
+      "removeXMLProcInst": false
+    },
+    {
+      "removeComments": false
+    },
+    {
+      "removeMetadata": false
+    },
+    {
+      "removeXMLNS": false
+    },
+    {
+      "removeEditorsNSData": false
+    },
+    {
+      "cleanupAttrs": false
+    },
+    {
+      "inlineStyles": false
+    },
+    {
+      "minifyStyles": false
+    },
+    {
+      "convertStyleToAttrs": false
+    },
+    {
+      "cleanupIDs": false
+    },
+    {
+      "removeRasterImages": false
+    },
+    {
+      "removeTitle": false
+    },
+    {
+      "removeDesc": false
+    },
+    {
+      "removeUselessDefs": false
+    },
+    {
+      "cleanupNumericValues": false
+    },
+    {
+      "cleanupListOfValues": false
+    },
+    {
+      "convertColors": false
+    },
+    {
+      "removeUnknownsAndDefaults": false
+    },
+    {
+      "removeNonInheritableGroupAttrs": false
+    },
+    {
+      "removeUselessStrokeAndFill": false
+    },
+    {
+      "removeViewBox": false
+    },
+    {
+      "cleanupEnableBackground": false
+    },
+    {
+      "removeHiddenElems": false
+    },
+    {
+      "removeEmptyText": false
+    },
+    {
+      "convertShapeToPath": false
+    },
+    {
+      "moveElemsAttrsToGroup": false
+    },
+    {
+      "moveGroupAttrsToElems": false
+    },
+    {
+      "collapseGroups": false
+    },
+    {
+      "convertPathData": false
+    },
+    {
+      "convertEllipseToCircle": false
+    },
+    {
+      "convertTransform": false
+    },
+    {
+      "removeEmptyAttrs": false
+    },
+    {
+      "removeEmptyContainers": false
+    },
+    {
+      "mergePaths": false
+    },
+    {
+      "removeUnusedNS": false
+    },
+    {
+      "reusePaths": false
+    },
+    {
+      "sortAttrs": false
+    },
+    {
+      "sortDefsChildren": false
+    },
+    {
+      "removeTitle": false
+    },
+    {
+      "removeDesc": false
+    },
+    {
+      "removeDimensions": false
+    },
+    {
+      "removeStyleElement": false
+    },
+    {
+      "prefixIds": false
+    }
+  ]
+}

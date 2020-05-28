@@ -1,12 +1,6 @@
 module.exports = {
   plugins: [
     {
-      cleanupAttrs: true,
-    },
-    {
-      inlineStyles: false,
-    },
-    {
       removeDoctype: true,
     },
     {
@@ -19,6 +13,30 @@ module.exports = {
       removeMetadata: true,
     },
     {
+      removeXMLNS: false,
+    },
+    {
+      removeEditorsNSData: true,
+    },
+    {
+      cleanupAttrs: true,
+    },
+    {
+      inlineStyles: false,
+    },
+    {
+      minifyStyles: true,
+    },
+    {
+      convertStyleToAttrs: true,
+    },
+    {
+      cleanupIDs: true,
+    },
+    {
+      removeRasterImages: true,
+    },
+    {
       removeTitle: true,
     },
     {
@@ -28,37 +46,13 @@ module.exports = {
       removeUselessDefs: true,
     },
     {
-      removeEditorsNSData: true,
+      cleanupNumericValues: true,
     },
     {
-      removeEmptyAttrs: true,
-    },
-    {
-      removeHiddenElems: true,
-    },
-    {
-      removeEmptyText: true,
-    },
-    {
-      removeEmptyContainers: true,
-    },
-    {
-      removeViewBox: false,
-    },
-    {
-      cleanupEnableBackground: true,
-    },
-    {
-      convertStyleToAttrs: true,
+      cleanupListOfValues: false,
     },
     {
       convertColors: true,
-    },
-    {
-      convertPathData: true,
-    },
-    {
-      convertTransform: true,
     },
     {
       removeUnknownsAndDefaults: true,
@@ -70,13 +64,19 @@ module.exports = {
       removeUselessStrokeAndFill: true,
     },
     {
-      removeUnusedNS: true,
+      removeViewBox: false,
     },
     {
-      cleanupIDs: true,
+      cleanupEnableBackground: true,
     },
     {
-      cleanupNumericValues: true,
+      removeHiddenElems: true,
+    },
+    {
+      removeEmptyText: true,
+    },
+    {
+      convertShapeToPath: false,
     },
     {
       moveElemsAttrsToGroup: true,
@@ -88,19 +88,49 @@ module.exports = {
       collapseGroups: true,
     },
     {
-      removeRasterImages: false,
+      convertPathData: true,
+    },
+    {
+      convertEllipseToCircle: true
+    },
+    {
+      convertTransform: true,
+    },
+    {
+      removeEmptyAttrs: true,
+    },
+    {
+      removeEmptyContainers: true,
     },
     {
       mergePaths: true,
     },
     {
-      convertShapeToPath: false,
+      removeUnusedNS: true,
+    },
+    {
+      reusePaths: false,
     },
     {
       sortAttrs: true,
     },
     {
+      sortDefsChildren: false,
+    },
+    {
+      removeTitle: true,
+    },
+    {
+      removeDesc: true,
+    },
+    {
       removeDimensions: false,
     },
+    {
+      removeStyleElement: false,
+    },
+    {
+      prefixIds: false,
+    }
   ],
 }

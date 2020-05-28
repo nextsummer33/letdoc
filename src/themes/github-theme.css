@@ -259,3 +259,8 @@ h3 {
   padding: 10px 0;
   margin: auto;
 }
+
+/* Fixing the title of x-axis of the mermaid gantt diagram */
+.mermaid-container .tick {
+  stroke: #24292e !important;
+}

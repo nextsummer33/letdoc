@@ -29,7 +29,7 @@ async function mermaidPipeline(
       const ctx = mermaidCtx[i].replace(/```mermaid\n*([^`]+)\n*```/, '$1')
       await page.$eval(
         '#container',
-        function (container, definition, config, css) {
+        function (container, definition, config, css, index) {
           const mermaid = window.mermaid
           mermaid.initialize(config)
 
@@ -47,16 +47,18 @@ async function mermaidPipeline(
             head.appendChild(style)
           }
 
-          container.innerHTML = mermaid.mermaidAPI.render('mermaid', definition)
+          container.innerHTML = mermaid.mermaidAPI.render(`mermaid-${index}`, definition)
         },
         ctx,
         config,
-        css
+        css,
+        i + 1
       )
       // Get the svg content out
-      svg = await page.$eval('#container', (container) => {
+      let svg = await page.$eval('#container', (container) => {
         return container.innerHTML
       })
+
 
       svg = htmlMinifier(svg, {
         collapseBooleanAttributes: true,
@@ -71,11 +73,20 @@ async function mermaidPipeline(
         sortClassName: true
       })
 
-      svg.replace(/(<svg.+)width=".+"(.+)/g, '$1width="100%"$2')
+      svg = svg.replace(/(<svg[^>]+)width="[\d%px]+"(.+)/g, `$1width="${width}"$2`)
+      // Used to fixed the issue of svgo found the following pattern is invalid
+      svg = svg.replace(/font-family:(&quot|&apos)/g, '')
+
+      // checking the existent of viewbox attribute
+      if (svg.indexOf("viewBox") === -1) {
+        const matches = /<svg.+height="(\d+)".+/.exec(svg) || []
+        let height = matches.length > 1 ? matches[1] : 0;
+        svg = svg.replace(/<svg(.+)/, `<svg viewBox="0 0 900 ${height}" $1`)
+      }
 
       mdContent = mdContent.replace(
         /```mermaid[^`]*```/,
-        `<div class="mermaid">${svg}</div>`
+        `<div class="mermaid-container">${svg}</div>`
       )
     }
   }

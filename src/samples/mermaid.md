@@ -50,6 +50,7 @@ Future task2               :         des4, after des3, 5d
 ```
 
 example 4:
+
 ```mermaid
 classDiagram
 Class01 <|-- AveryLongClass : Cool
@@ -68,12 +69,13 @@ Class08 <--> C2: Cool label
 ```
 
 example 5:
+
 ```mermaid
 gitGraph:
 options
 {
     "nodeSpacing": 150,
-    "nodeRadius": 10
+    "nodeRadius": 5
 }
 end
 commit
@@ -86,4 +88,13 @@ commit
 commit
 merge newbranch
 
+```
+
+example 6:
+
+```mermaid
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
 ```
