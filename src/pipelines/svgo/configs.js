@@ -1,4 +1,5 @@
 module.exports = {
+  js2svg: { useShortTags: false },
   plugins: [
     {
       removeDoctype: true,

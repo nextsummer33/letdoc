@@ -27,6 +27,8 @@ async function mermaidPipeline(
     for (let i = 0; i < mermaidCtx.length; i++) {
       // extract the context in the mermaid code block
       const ctx = mermaidCtx[i].replace(/```mermaid\n*([^`]+)\n*```/, '$1')
+      const type = mermaidCtx[i].match(/```mermaid\n*([^\s:]+)\n*[^`]*```/)[1]
+
       await page.$eval(
         '#container',
         function (container, definition, config, css, index) {
@@ -59,7 +61,6 @@ async function mermaidPipeline(
         return container.innerHTML
       })
 
-
       svg = htmlMinifier(svg, {
         collapseBooleanAttributes: true,
         collapseWhitespace: true,
@@ -79,14 +80,14 @@ async function mermaidPipeline(
 
       // checking the existent of viewbox attribute
       if (svg.indexOf("viewBox") === -1) {
-        const matches = /<svg.+height="(\d+)".+/.exec(svg) || []
+        const matches = /<svg[^>]+height="(\d+)".+/.exec(svg) || []
         let height = matches.length > 1 ? matches[1] : 0;
         svg = svg.replace(/<svg(.+)/, `<svg viewBox="0 0 900 ${height}" $1`)
       }
 
       mdContent = mdContent.replace(
         /```mermaid[^`]*```/,
-        `<div class="mermaid-container">${svg}</div>`
+        `<div class="mermaid-container ${type.toLowerCase()}">${svg}</div>`
       )
     }
   }

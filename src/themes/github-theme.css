@@ -264,3 +264,7 @@ h3 {
 .mermaid-container .tick {
   stroke: #24292e !important;
 }
+
+.mermaid-container.erdiagram text {
+  font-size: 0.8em !important;
+}
