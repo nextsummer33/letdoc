@@ -44,7 +44,7 @@ commander
   )
   .parse(process.argv)
 
-let { template, templateTheme, mermiadTheme, configFile, scale } = commander
+let { template, templateTheme, mermaidTheme, configFile, scale } = commander
 
 const argv = process.argv
 const argvlen = 3
@@ -83,7 +83,15 @@ const main = async () => {
       height: 900,
       deviceScaleFactor: parseInt(scale || 1, 10),
       css: myCSS,
-      config: configFile || { theme: mermiadTheme }
+      config: configFile || {
+        theme: mermaidTheme,
+        noteFontFamily: 'arial',
+        messageFontFamily: 'arial',
+        fontFamily: 'arial',
+        gantt: {
+          fontFamily:'arial',
+        }
+      }
     })
     mdContent = await chartjsPipeline(mdContent, {
       width: 900,

@@ -29,7 +29,7 @@ module.exports = {
       minifyStyles: true,
     },
     {
-      convertStyleToAttrs: true,
+      convertStyleToAttrs: false,
     },
     {
       cleanupIDs: true,

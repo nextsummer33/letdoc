@@ -268,3 +268,7 @@ h3 {
 .mermaid-container.erdiagram text {
   font-size: 0.8em !important;
 }
+
+.mermaid-container svg {
+  width: 100%;
+}

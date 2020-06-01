@@ -4,6 +4,7 @@ const configs = require('./configs')
 function decodeStr(str) {
   str = str.replace(/&apos;/g, "'")
   str = str.replace(/&quot;/g, '"')
+  str = str.replace(/&gt;/g, '>')
   return str
 }
 
@@ -22,9 +23,13 @@ async function svgoPipeline(mdContent) {
     for (let i= 0; i < m.length; i++) {
       const match = m[i];
       const optsvg = await svgo.optimize(match, {})
-      temp = temp.replace(match, decodeStr(optsvg.data))
+      // fixed the <br /> convert into <br></br>
+      // other the browser will treat it as <br><br> double link breaks
+      temp = temp.replace(match, decodeStr(optsvg.data.replace(/<br><\/br>/g, "<br>")))
     }
   }
+
+
   return temp
 }
 
