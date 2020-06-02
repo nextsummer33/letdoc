@@ -1,9 +1,12 @@
 const fs = require('fs')
+const path = require('path')
 const showdown = require('showdown')
 const htmlMinifier = require('html-minifier').minify
-const { capitializeWords } = require('./helper')
 const Prism = require('prismjs')
-const path = require('path')
+const loadLanguages = require('prismjs/components/')
+const { capitializeWords } = require('./helper')
+
+loadLanguages(['shell', 'python'])
 
 function getMetadata(mdContent) {
   let metadata = {
@@ -129,15 +132,13 @@ async function mdToHtml(
         if (m.index == codeRegex.unicode) {
           return
         }
-        const lang =
-          m[1].indexOf('language-') > -1 ? m[1].split('-')[1] : 'text'
-        let grammer = Prism.languages.shell
-        if (lang) {
-          grammer = Prism.languages[lang]
+        let lang = m[1].indexOf('language-') > -1 ? m[1].split('-')[1] : ''
+        if (lang && lang !== 'text') {
+          const grammer = Prism.languages[lang]
+          // const prismLang = Prism.languages.
+          const highlightCodeBlock = Prism.highlight(m[2], grammer, lang)
+          templateData = templateData.replace(m[2], highlightCodeBlock)
         }
-        // const prismLang = Prism.languages.
-        const highlightCodeBlock = Prism.highlight(m[2], grammer, lang)
-        templateData = templateData.replace(m[2], highlightCodeBlock)
       }
     } else {
       curIndex = -1
