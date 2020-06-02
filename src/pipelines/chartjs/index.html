@@ -3,13 +3,14 @@
   <head></head>
   <body>
     <div id="container">
-      <canvas id="myChart" width="900" height="300"></canvas>
+      <canvas id="myChart" width="900" height="400"></canvas>
     </div>
-    <script src="../../lib/canvas2svg.js"></script>
     <script src="../../../node_modules/chart.js/dist/Chart.min.js"></script>
     <script>
-      var context = document.getElementById("myChart").getContext("2d");
-      window.c2s = C2S(900,400);
+      Chart.defaults.polarArea.animation.animateScale = false;
+      Chart.defaults.global.animation.duration = 0;
+      Chart.defaults.global.hover.animationDuration = 0;
+      Chart.defaults.global.responsiveAnimationDuration = 0;
     </script>
   </body>
 </html>
