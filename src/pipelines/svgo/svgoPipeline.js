@@ -10,6 +10,7 @@ function decodeStr(str) {
 
 async function svgoPipeline(mdContent) {
   const svgo = new SVGO(configs)
+
   const regex = /<svg.*>.+<\/svg>/g
   let m;
   let temp = mdContent
@@ -21,11 +22,16 @@ async function svgoPipeline(mdContent) {
 
     // The result can be accessed through the `m`-variable.
     for (let i= 0; i < m.length; i++) {
-      const match = m[i];
-      const optsvg = await svgo.optimize(match, {})
+      let matchedSvg = m[i];
+    // Used to fixed the issue of svgo found the following pattern is invalid
+      let svg = matchedSvg.replace(/&quot;/g, "'")
+      // solving the issue of following link, since <br/> is valid tag instead of <br>
+      // https://github.com/mermaid-js/mermaid/issues/614
+      svg = svg.replace(/<br>/g, '<br\/>')
+      const optsvg = await svgo.optimize(svg, {})
       // fixed the <br /> convert into <br></br>
       // other the browser will treat it as <br><br> double link breaks
-      temp = temp.replace(match, decodeStr(optsvg.data.replace(/<br><\/br>/g, "<br>")))
+      temp = temp.replace(matchedSvg, decodeStr(optsvg.data.replace(/<br><\/br>/g, "<br>")))
     }
   }
 
