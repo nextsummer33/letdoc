@@ -331,6 +331,25 @@ Class08 <--> C2: Cool label
 
 example 5:
 
+```text
+gitGraph:
+options
+{
+    "nodeSpacing": 150,
+    "nodeRadius": 5
+}
+end
+commit
+branch newbranch
+checkout newbranch
+commit
+commit
+checkout master
+commit
+commit
+merge newbranch
+```
+
 ```mermaid
 gitGraph:
 options
@@ -348,10 +367,16 @@ checkout master
 commit
 commit
 merge newbranch
-
 ```
 
 example 6:
+
+```text
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+```
 
 ```mermaid
 erDiagram

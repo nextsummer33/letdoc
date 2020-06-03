@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer')
 const sharp = require('sharp')
 const path = require('path')
-
 async function chartjsPipeline(
   mdContent,
   options = {
@@ -48,10 +47,10 @@ async function chartjsPipeline(
         const base64Img = imgData.replace(/data:image\/\w+;base64,/, '')
         const inbuffer = Buffer.from(base64Img, 'base64')
         const outbuffer = await sharp(inbuffer)
-          .png({ compressionLevel: 9 })
+          .webp()
           .toBuffer()
 
-        imgData = 'data:image/png;base64,' + outbuffer.toString('base64')
+        imgData = 'data:image/webp;base64,' + outbuffer.toString('base64')
       }
 
       mdContent = mdContent.replace(
