@@ -48,7 +48,8 @@ async function mdToHtml(
   const templatePath = `${__dirname}/templates/${template}`
   let templateData = ''
   const prismThemePath = path.join(
-    process.cwd(),
+    __dirname,
+    '..',
     'node_modules',
     'prismjs',
     'themes',
