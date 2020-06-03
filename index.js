@@ -107,7 +107,6 @@ const main = async () => {
       theme: templateTheme + '-theme.css',
     })
 
-
     fs.writeFile(
       output,
       htmlContent,
