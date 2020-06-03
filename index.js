@@ -95,8 +95,7 @@ const main = async () => {
     })
     mdContent = await chartjsPipeline(mdContent, {
       width: 900,
-      height: 400,
-      deviceScaleFactor: parseInt(scale || 1, 10),
+      height: 400
     })
 
     mdContent = await svgoPipeline(mdContent)
