@@ -40,6 +40,16 @@ md2html --template mytemplate example.md
 md2html -t mytemplate example.md
 ```
 
+## PNG or PDF Formats
+
+You can generate a full page png / pdf instead of html file by adding an option with the command:
+
+```shell
+md2html -f png example.md example.png
+# or
+md2html -f pdf example.md example.pdf
+```
+
 ## Mermaid Examples
 
 Writing a code block with a syntax keyword `mermaid` to let the generator knows which code block will be converted into diagram/chart. Besides, the svg will be optimized by `SVGO` to minize the file size of the output document.

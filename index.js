@@ -3,6 +3,8 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const commander = require('commander')
+const puppeteer = require('puppeteer')
+const sharp = require('sharp')
 const {
   mermaidPipeline,
   chartjsPipeline,
@@ -46,11 +48,14 @@ commander
     'Embedded all the assets into HTML output file',
     true
   )
+  .option(
+    '-f, --format [format]',
+    'Format of output file, HTML, PNG and PDF are supported. Default: html',
+    /^html|png|pdf$/,
+    'html'
+  )
   .parse(process.argv)
 
-let { template, templateTheme, mermaidTheme, configFile, scale } = commander
-
-const argv = commander.args
 const myCSS = 'body { font: 14px arial; }'
 let input = ''
 let output = ''
@@ -63,6 +68,16 @@ const error = (msg) => {
 // normalize args
 
 const main = async () => {
+  const {
+    template,
+    templateTheme,
+    mermaidTheme,
+    configFile,
+    scale,
+    format,
+  } = commander
+  const argv = commander.args
+
   if (argv.length < 1) {
     error('Missing argument for input markdown file.')
   } else {
@@ -74,7 +89,7 @@ const main = async () => {
     output =
       argv.length >= 2
         ? path.resolve(argv[1])
-        : /(?:.+\/)*\/?(.*)\..*/g.exec(input)[1] + '.html'
+        : /(?:.+\/)*\/?(.*)\..*/g.exec(input)[1] + '.' + format
   }
 
   try {
@@ -105,26 +120,52 @@ const main = async () => {
     mdContent = await svgoPipeline(mdContent)
 
     // Convert the markdown into html
-    const htmlContent = await mdToHtml(mdContent, {
+    let outData = await mdToHtml(mdContent, {
       template,
       theme: templateTheme + '-theme',
     })
 
-    fs.writeFile(
-      output,
-      htmlContent,
-      { encoding: 'utf8', flag: 'w' },
-      (err) => {
-        if (err) {
-          error(error)
-        } else {
-          console.log(
-            `\nConverted HTML file is generated at '${chalk.green(output)}'\n`
-          )
-          process.exit(0)
-        }
+    if (['png', 'pdf'].indexOf(format) > -1) {
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      page.setViewport({
+        width: 1000,
+        height: 1000,
+        deviceScaleFactor: parseInt(scale, 10) || 1,
+      })
+      await page.setContent(outData, {
+        waitUntil: 'domcontentloaded',
+      })
+      if (format === 'png') {
+        outData = await page.screenshot({ fullPage: true, type: 'png' })
+        // make a smaller png size using sharp
+        outData = await sharp(outData)
+          .png()
+          .toBuffer()
+      } else {
+        outData = await page.pdf({
+          format: 'A4',
+          printBackground: true,
+          displayHeaderFooter: true,
+          footerTemplate:
+            '<div style="color: lightgray; font-size: 10px; padding-top: 5px; text-align: center; width: 100%;"><span>Page</span> - <span class="pageNumber"></span></div>',
+          margin: { top: '30', left: '30', bottom: '70', right: '30' },
+        })
       }
-    )
+      // close it, no need to wait for it
+      browser.close()
+    }
+
+    fs.writeFile(output, outData, { encoding: 'utf8', flag: 'w' }, (err) => {
+      if (err) {
+        error(error)
+      } else {
+        console.log(
+          `\nConverted file is generated at '${chalk.green(output)}'\n`
+        )
+        process.exit(0)
+      }
+    })
   } catch (err) {
     error(err)
   }
