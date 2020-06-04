@@ -19,7 +19,7 @@
     "svgo": "^1.3.2"
   },
   "bin": {
-    "md2html": "./index.js"
+    "letdoc": "./index.js"
   },
   "scripts": {
     "convert": "node index.js",
