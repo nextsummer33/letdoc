@@ -37,15 +37,15 @@ function getMetadata(mdContent) {
 async function mdToHtml(
   mdContent,
   options = {
-    template: 'asqi-glp.html',
-    theme: 'github-theme.css',
+    template: 'asqi-glp',
+    theme: 'github-theme',
     highlightTheme: '',
   }
 ) {
   const { template, theme } = options
-  const themePath = `${__dirname}/themes/${theme}`
+  const themePath = path.join(__dirname, '..', 'themes', theme + '.css')
   let themeData = ''
-  const templatePath = `${__dirname}/templates/${template}`
+  const templatePath = path.join(__dirname, '..', 'templates', template + '.html')
   let templateData = ''
   const prismThemePath = path.join(
     __dirname,

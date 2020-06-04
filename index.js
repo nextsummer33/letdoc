@@ -102,8 +102,8 @@ const main = async () => {
 
     // Convert the markdown into html
     const htmlContent = await mdToHtml(mdContent, {
-      template: template + '.html',
-      theme: templateTheme + '-theme.css',
+      template,
+      theme: templateTheme + '-theme',
     })
 
     fs.writeFile(
