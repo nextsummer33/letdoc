@@ -60,7 +60,7 @@ sequenceDiagram
 
 The mermaid diagram will generate as a `svg` and embbed in the output html file just like the image is shown below:
 
-![Mermaid diagram 1](assets/example1.svg)
+![Mermaid diagram 1](https://i.ibb.co/4sggKqD/example1.png)
 
 <pre><code>```mermaid
 pie title NETFLIX
@@ -68,7 +68,7 @@ pie title NETFLIX
   "Time spent watching it" : 10
 ```</code></pre>
 
-![Mermaid diagram 2](assets/example2.svg)
+![Mermaid diagram 2](https://i.ibb.co/0Vnf3cV/example2.png)
 
 ## ChartJS
 
@@ -125,7 +125,7 @@ new Chart(ctx, {
 
 `Noted:` You can write a simple logic to generate a dynamic dataset for chartjs
 
-![Chartjs chart 1](assets/example3.svg)
+![Chartjs chart 1](https://i.ibb.co/FnKbstJ/example3.png)
 
 Dependencies
 
