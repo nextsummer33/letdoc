@@ -31,10 +31,10 @@ async function svgoPipeline(mdContent) {
       const optsvg = await svgo.optimize(svg, {})
       // fixed the <br /> convert into <br></br>
       // other the browser will treat it as <br><br> double link breaks
-      temp = temp.replace(matchedSvg, decodeStr(optsvg.data.replace(/<br><\/br>/g, "<br>")))
+      const finalStr = decodeStr(optsvg.data.replace(/<br><\/br>/g, "<br>"))
+      temp = temp.replace(matchedSvg, finalStr)
     }
   }
-
 
   return temp
 }

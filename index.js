@@ -5,6 +5,8 @@ const chalk = require('chalk')
 const commander = require('commander')
 const puppeteer = require('puppeteer')
 const sharp = require('sharp')
+const docxjs = require('html-docx-js')
+
 const {
   mermaidPipeline,
   chartjsPipeline,
@@ -51,7 +53,7 @@ commander
   .option(
     '-f, --format [format]',
     'Format of output file, HTML, PNG and PDF are supported. Default: html',
-    /^html|png|pdf$/,
+    /^html|png|pdf|docx$/,
     'html'
   )
   .parse(process.argv)
@@ -102,6 +104,7 @@ const main = async () => {
       height: 900,
       deviceScaleFactor: parseInt(scale || 1, 10),
       css: myCSS,
+      imageFormat: format === 'docx',
       config: configFile || {
         theme: mermaidTheme,
         noteFontFamily: 'arial',
@@ -125,7 +128,7 @@ const main = async () => {
       theme: templateTheme + '-theme',
     })
 
-    if (['png', 'pdf'].indexOf(format) > -1) {
+    if (['png', 'pdf', 'docx'].indexOf(format) > -1) {
       const browser = await puppeteer.launch()
       const page = await browser.newPage()
       page.setViewport({
@@ -142,14 +145,17 @@ const main = async () => {
         outData = await sharp(outData)
           .png()
           .toBuffer()
+      } else if (format === 'docx') {
+        outData = docxjs.asBlob(outData)
       } else {
         outData = await page.pdf({
           format: 'A4',
           printBackground: true,
           displayHeaderFooter: true,
+          headerTemplate: '<div></div>',
           footerTemplate:
-            '<div style="color: lightgray; font-size: 10px; padding-top: 5px; text-align: center; width: 100%;"><span>Page</span> - <span class="pageNumber"></span></div>',
-          margin: { top: '30', left: '30', bottom: '70', right: '30' },
+            '<div style="font-size: 8px; text-align: center; width: 100%;"><span>Page</span> - <span class="pageNumber"></span></div>',
+          margin: { top: '50', left: '30', bottom: '70', right: '30' },
         })
       }
       // close it, no need to wait for it

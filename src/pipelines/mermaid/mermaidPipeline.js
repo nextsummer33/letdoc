@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
 const path = require('path')
+const sharp = require('sharp')
 
 async function mermaidPipeline(
   mdContent,
@@ -9,9 +10,10 @@ async function mermaidPipeline(
     width: 900,
     height: 900,
     deviceScaleFactor: 1,
+    imageFormat: false,
   }
 ) {
-  const { config, css, width, height, deviceScaleFactor } = options
+  const { config, css, width, height, deviceScaleFactor, imageFormat } = options
   // Get all the mermaid code block in the markdown content
   const mermaidCtx = mdContent.match(/```mermaid\n*([^`]+)\n*```/g)
 
@@ -70,6 +72,27 @@ async function mermaidPipeline(
       // It causing the svgo mininizer could not parse the svg correctly
       // remove the width attribute, using the default width for svg
       svg = svg.replace(/(<svg[^>]+)width="[\d%px\.]+"(.+)/g, `$1$2`)
+
+      if (imageFormat) {
+        const clip = await page.$eval('#container', (container, svg) => {
+          container.innerHTML = svg;
+          const el = document.querySelector('svg')
+          const { left, top, width, height } = el.getBoundingClientRect()
+          return {
+            x: left,
+            y: top,
+            width,
+            height
+          }
+        }, svg)
+
+        let buffer = await page.screenshot({clip, encoding: 'binary' })
+        buffer = await sharp(buffer)
+          .png()
+          .toBuffer()
+        const base64str = buffer.toString('base64')
+        svg = `<img src="data:image/png;base64,${base64str}" />`
+      }
 
       mdContent = mdContent.replace(
         /```mermaid[^`]*```/,
