@@ -1,6 +1,8 @@
-[comment]: # (title: Generating Mermaid Diagrams)
+[comment]: # (title: Awesome Mermaid Diagrams)
 [comment]: # (version: v1.0)
 [comment]: # (author: Kuan Cheang)
+[comment]: # (client: HappyFarm)
+[comment]: # (company: Example Company Ltd.)
 
 # Generating Mermaid Diagrams
 

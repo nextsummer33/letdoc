@@ -1,5 +1,5 @@
 {
-  "name": "asqi-md2html",
+  "name": "mydoc",
   "version": "0.1.0",
   "description": "Convert a markdown file into html file with github flavor, supports Mermaid, chartjs and syntax highlight.",
   "author": "blackrow33",

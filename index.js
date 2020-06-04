@@ -19,12 +19,12 @@ commander
   .version(pkg.version)
   .option(
     '-t, --template [template]',
-    'The template layout of gernerated HTML file, could be asqi-glp, mocert-glp. Optional. Default: asqi-glp',
-    /^\w+$/,
-    'asqi-glp'
+    'The template layout of gernerated HTML file, the file name of html template in templates folder. Optional. Default: default',
+    /[\w-_]+/,
+    'default'
   )
   .option(
-    '-t, --template-theme [templateTheme]',
+    '-th, --template-theme [templateTheme]',
     'Theme of the flavor style, could be github, dark or neutral. Optional. Default: github',
     /^github|dark|neutral$/,
     'github'
@@ -46,7 +46,7 @@ commander
     '1'
   )
   .option(
-    '-e, --embedded [embbed]',
+    '-e, --embedded [embed]',
     'Embedded all the assets into HTML output file',
     true
   )
@@ -55,6 +55,11 @@ commander
     'Format of output file, HTML, PNG and PDF are supported. Default: html',
     /^html|png|pdf|docx$/,
     'html'
+  )
+  .option(
+    '-l, --logo [logo]',
+    'Name or path of logo file, change the logo in the default template. Optional. E.g. logo.png',
+    '',
   )
   .parse(process.argv)
 
@@ -77,6 +82,7 @@ const main = async () => {
     configFile,
     scale,
     format,
+    logo,
   } = commander
   const argv = commander.args
 
@@ -125,7 +131,8 @@ const main = async () => {
     // Convert the markdown into html
     let outData = await mdToHtml(mdContent, {
       template,
-      theme: templateTheme + '-theme',
+      theme: templateTheme,
+      logo
     })
 
     if (['png', 'pdf', 'docx'].indexOf(format) > -1) {

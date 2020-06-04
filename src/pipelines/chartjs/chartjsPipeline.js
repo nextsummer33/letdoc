@@ -10,7 +10,7 @@ async function chartjsPipeline(
 ) {
   const { width, height } = options
   // Get all the context code block for chartjs in the markdown content
-  const context = mdContent.match(/```js\schartjs\n*([^`]+)\n*```/g)
+  const context = mdContent.match(/```js\s+chartjs\n*([^`]+)\n*```/g)
 
   if (context && context.length) {
     // Running a puppeteer and headless chromimun

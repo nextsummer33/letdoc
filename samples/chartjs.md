@@ -1,12 +1,14 @@
-[comment]: # (title: Setup a Posfix Email Relay Service)
+[comment]: # (title: Support Chartjs in SVG format)
 [comment]: # (version: v1.0)
 [comment]: # (author: Kuan Cheang)
+[comment]: # (client: HappyFarm)
+[comment]: # (company: Example Company Ltd.)
 
-# This is a mermaid example
+# Support Chartjs in SVG format
 
-Show the chart by using chartjs
+It will be great if we can draw a chart using markdown, save the time to draw a chart in the document. Dataset can be easily changed in the markdown document.
 
-example 1:
+## Example 1
 
 ```js
 var data = {

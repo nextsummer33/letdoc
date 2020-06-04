@@ -24,7 +24,7 @@ function getMetadata(mdContent) {
     const regx = /\[comment\]:\s*#\s*\(.*:(.*)\)/
     for (let i = 0; i < matches.length; i++) {
       const norm = matches[i].trim().toLowerCase()
-      const metaname = ['title', 'author', 'version'].find((t) => {
+      const metaname = ['title', 'author', 'version', 'client', 'company'].find((t) => {
         return norm.indexOf(t) > -1 ? t : ''
       })
       metaname && (metadata[metaname] = norm.replace(regx, '$1').trim())
@@ -37,12 +37,13 @@ function getMetadata(mdContent) {
 async function mdToHtml(
   mdContent,
   options = {
-    template: 'asqi-glp',
-    theme: 'github-theme',
+    template: 'default',
+    theme: 'github',
     highlightTheme: '',
+    logo: '',
   }
 ) {
-  const { template, theme } = options
+  const { template, theme, logo } = options
   const themePath = path.join(__dirname, '..', 'themes', theme + '.css')
   let themeData = ''
   const templatePath = path.join(__dirname, '..', 'templates', template + '.html')
@@ -86,6 +87,12 @@ async function mdToHtml(
     if (!prismThemeData) {
       throw `No content found on the template file at path "${prismThemePath}"`
     }
+
+    if (logo) {
+      const ext = path.extname(logo).substring(1)
+      const logoStr = fs.readFileSync(logo).toString('base64')
+      templateData = templateData.replace(/<img(.+)src="([^\s\n]*)"(.+)\/>/g, `<img$1src="data:image/${ext};base64,${logoStr}"$3/>`)
+    }
   } catch (error) {
     throw error
   }
@@ -100,6 +107,14 @@ async function mdToHtml(
   templateData = templateData.replace(
     /{{doc_author}}/g,
     capitializeWords(metadata.author)
+  )
+  templateData = templateData.replace(
+    /{{doc_company}}/g,
+    capitializeWords(metadata.company)
+  )
+  templateData = templateData.replace(
+    /{{doc_client}}/g,
+    capitializeWords(metadata.client)
   )
   templateData = templateData.replace(
     /{{doc_date}}/g,
