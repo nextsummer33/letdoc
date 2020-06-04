@@ -24,9 +24,11 @@ function getMetadata(mdContent) {
     const regx = /\[comment\]:\s*#\s*\(.*:(.*)\)/
     for (let i = 0; i < matches.length; i++) {
       const norm = matches[i].trim().toLowerCase()
-      const metaname = ['title', 'author', 'version', 'client', 'company'].find((t) => {
-        return norm.indexOf(t) > -1 ? t : ''
-      })
+      const metaname = ['title', 'author', 'version', 'client', 'company'].find(
+        (t) => {
+          return norm.indexOf(t) > -1 ? t : ''
+        }
+      )
       metaname && (metadata[metaname] = norm.replace(regx, '$1').trim())
     }
   }
@@ -46,7 +48,12 @@ async function mdToHtml(
   const { template, theme, logo } = options
   const themePath = path.join(__dirname, '..', 'themes', theme + '.css')
   let themeData = ''
-  const templatePath = path.join(__dirname, '..', 'templates', template + '.html')
+  const templatePath = path.join(
+    __dirname,
+    '..',
+    'templates',
+    template + '.html'
+  )
   let templateData = ''
   const prismThemePath = path.join(
     __dirname,
@@ -91,7 +98,10 @@ async function mdToHtml(
     if (logo) {
       const ext = path.extname(logo).substring(1)
       const logoStr = fs.readFileSync(logo).toString('base64')
-      templateData = templateData.replace(/<img(.+)src="([^\s\n]*)"(.+)\/>/g, `<img$1src="data:image/${ext};base64,${logoStr}"$3/>`)
+      templateData = templateData.replace(
+        /<img(.+)src="([^\s\n]*)"(.+)\/>/g,
+        `<img$1src="data:image/${ext};base64,${logoStr}"$3/>`
+      )
     }
   } catch (error) {
     throw error
@@ -103,18 +113,21 @@ async function mdToHtml(
     /{{doc_title}}/g,
     capitializeWords(metadata.title)
   )
-  templateData = templateData.replace(/{{doc_version}}/g, metadata.version)
+  templateData = templateData.replace(
+    /{{doc_version}}/g,
+    metadata.version || 'v1.0'
+  )
   templateData = templateData.replace(
     /{{doc_author}}/g,
-    capitializeWords(metadata.author)
+    capitializeWords(metadata.author || 'Your Name')
   )
   templateData = templateData.replace(
     /{{doc_company}}/g,
-    capitializeWords(metadata.company)
+    capitializeWords(metadata.company || 'Example Company')
   )
   templateData = templateData.replace(
     /{{doc_client}}/g,
-    capitializeWords(metadata.client)
+    capitializeWords(metadata.client || 'My Client')
   )
   templateData = templateData.replace(
     /{{doc_date}}/g,
