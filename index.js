@@ -46,11 +46,6 @@ commander
     '1'
   )
   .option(
-    '-e, --embedded [embed]',
-    'Embedded all the assets into HTML output file',
-    true
-  )
-  .option(
     '-f, --format [format]',
     'Format of output file, HTML, PNG and PDF are supported. Default: html',
     /^html|png|pdf|docx$/,
@@ -132,7 +127,8 @@ const main = async () => {
     let outData = await mdToHtml(mdContent, {
       template,
       theme: templateTheme,
-      logo
+      logo,
+      inputDir: path.dirname(input)
     })
 
     if (['png', 'pdf', 'docx'].indexOf(format) > -1) {

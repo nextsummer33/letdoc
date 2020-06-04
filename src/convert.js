@@ -43,9 +43,10 @@ async function mdToHtml(
     theme: 'github',
     highlightTheme: '',
     logo: '',
+    inputDir: __dirname,
   }
 ) {
-  const { template, theme, logo } = options
+  const { template, theme, logo, inputDir } = options
   const themePath = path.join(__dirname, '..', 'themes', theme + '.css')
   let themeData = ''
   const templatePath = path.join(
@@ -142,11 +143,26 @@ async function mdToHtml(
     converter.makeHtml(mdContent)
   )
 
+
+  /* Sourcing the image link */
+  const imgRegex = /<img.+src="[~\.]?([^\s\n\.]+\.\w+)".*\/?>/g
+  let rawData = templateData
+  let m = null
+  while ((m = imgRegex.exec(rawData))) {
+    if (m.index === imgRegex.lastIndex) {
+      return
+    }
+
+    let imgData = fs.readFileSync(path.resolve(inputDir, m[1])).toString('base64')
+    imgData = 'data:image/' + path.extname(m[1]).substring(1) + ';base64,' + imgData
+    templateData = templateData.replace(m[1], imgData)
+  }
+
   /*
     Adding code highlight by using Prismjs
   */
   const codeRegex = /<code\sclass="(.+)">([\w\W]+)<\/code>/g
-  const rawData = templateData
+  rawData = templateData
   let curIndex = 0
   do {
     const subsetData = rawData.substring(curIndex)
