@@ -311,7 +311,8 @@ gantt
 
 ### Class
 
-<pre><code>&#x60;&#x60;&#x60;mermaid
+```text
+&#x60;&#x60;&#x60;text
 classDiagram
     Class01 <|-- AveryLongClass : Cool
     Class03 *-- Class04
@@ -326,7 +327,8 @@ classDiagram
     Class01 : int chimp
     Class01 : int gorilla
     Class08 <--> C2: Cool label
-&#x60;&#x60;&#x60;</code></pre>
+&#x60;&#x60;&#x60;
+```
 
 ```mermaid
 classDiagram
