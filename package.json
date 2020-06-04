@@ -1,5 +1,5 @@
 {
-  "name": "mydoc",
+  "name": "letdoc",
   "version": "0.1.0",
   "description": "Convert a markdown file into html file with github flavor, supports Mermaid, chartjs and syntax highlight.",
   "author": "blackrow33",
@@ -28,7 +28,12 @@
   "keywords": [
     "markdown",
     "html",
-    "github"
+    "github",
+    "mermaid",
+    "chartjs",
+    "doc",
+    "svg",
+    "pdf"
   ],
   "devDependencies": {
     "jest": "^26.0.1"

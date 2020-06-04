@@ -7,15 +7,15 @@ This simple project is designed to work with `Mermaid` and `Chartjs`. If the mar
 ## Install
 
 ```shell
-npm install -g asqi-md2html
+npm install -g letdoc
 ```
 
 ## Usage
 
 ```shell
-md2html example.md
+letdoc example.md
 # or
-md2html example.md myexample.html
+letdoc example.md myexample.html
 ```
 
 An example content in `example.md`
@@ -35,19 +35,29 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nisi mauris
 Design your own template in html format and put it in the `templates` folder of project root and run as following:
 
 ```shell
-md2html --template mytemplate example.md
+letdoc --template mytemplate example.md
 # or
-md2html -t mytemplate example.md
+letdoc -t mytemplate example.md
+```
+
+Set logo in default template
+
+```shell
+letdoc --logo ./logo.png example.md
+# or
+letdoc -l ./logo.png example.md
 ```
 
 ## PNG or PDF Formats
 
 You can generate a full page png / pdf instead of html file by adding an option with the command:
 
+[Sample page image](https://ibb.co/Cm5qsH4)
+
 ```shell
-md2html -f png example.md example.png
+letdoc -f png example.md example.png
 # or
-md2html -f pdf example.md example.pdf
+letdoc -f pdf example.md example.pdf
 ```
 
 ## Mermaid Examples
