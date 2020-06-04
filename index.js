@@ -3,7 +3,11 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const commander = require('commander')
-const { mermaidPipeline, chartjsPipeline, svgoPipeline } = require('./src/pipelines')
+const {
+  mermaidPipeline,
+  chartjsPipeline,
+  svgoPipeline,
+} = require('./src/pipelines')
 const { mdToHtml } = require('./src/convert')
 const pkg = require('./package.json')
 
@@ -12,7 +16,7 @@ commander
   .option(
     '-t, --template [template]',
     'The template layout of gernerated HTML file, could be asqi-glp, mocert-glp. Optional. Default: asqi-glp',
-    /^asqi-glp|mocert-glp|none$/,
+    /^\w+$/,
     'asqi-glp'
   )
   .option(
@@ -46,8 +50,7 @@ commander
 
 let { template, templateTheme, mermaidTheme, configFile, scale } = commander
 
-const argv = process.argv
-const argvlen = 3
+const argv = commander.args
 const myCSS = 'body { font: 14px arial; }'
 let input = ''
 let output = ''
@@ -60,16 +63,17 @@ const error = (msg) => {
 // normalize args
 
 const main = async () => {
-  if (argv.length < argvlen) {
+  if (argv.length < 1) {
     error('Missing argument for input markdown file.')
   } else {
-    input = path.resolve(argv[argvlen - 1])
+    input = path.resolve(argv[0])
     if (!fs.existsSync(input)) {
       error('Markdown input file is not found.')
     }
+
     output =
-      argv.length > argvlen
-        ? path.resolve(argv[argvlen])
+      argv.length >= 2
+        ? path.resolve(argv[1])
         : /(?:.+\/)*\/?(.*)\..*/g.exec(input)[1] + '.html'
   }
 
@@ -89,13 +93,13 @@ const main = async () => {
         messageFontFamily: 'arial',
         fontFamily: 'arial',
         gantt: {
-          fontFamily:'arial',
-        }
-      }
+          fontFamily: 'arial',
+        },
+      },
     })
     mdContent = await chartjsPipeline(mdContent, {
       width: 900,
-      height: 400
+      height: 400,
     })
 
     mdContent = await svgoPipeline(mdContent)

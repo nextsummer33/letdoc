@@ -30,6 +30,16 @@ An example content in `example.md`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nisi mauris, mollis in leo ut, congue vulputate enim. Nulla interdum posuere orci in volutpat. Nulla fringilla erat leo, id sollicitudin velit sollicitudin non. Mauris condimentum nisi id lorem dignissim interdum. Curabitur lacinia vestibulum pharetra. Mauris at nisi eu nibh aliquet elementum et in lectus. Nunc viverra consectetur purus, sit amet fringilla est porta ut. Nam sem risus, rutrum ut pharetra eu, ornare non metus. Phasellus quis sodales metus. Nunc ornare vestibulum lectus, sed malesuada dui faucibus quis. Donec vulputate nibh a tortor pellentesque consequat. Vivamus faucibus nulla id varius imperdiet.
 ```
 
+## Customized Template
+
+Design your own template in html format and put it in the `templates` folder of project root and run as following:
+
+```shell
+md2html --template mytemplate example.md
+# or
+md2html -t mytemplate example.md
+```
+
 ## Mermaid Examples
 
 Writing a code block with a syntax keyword `mermaid` to let the generator knows which code block will be converted into diagram/chart. Besides, the svg will be optimized by `SVGO` to minize the file size of the output document.
