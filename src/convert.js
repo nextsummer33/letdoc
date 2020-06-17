@@ -2,11 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const showdown = require('showdown')
 const htmlMinifier = require('html-minifier').minify
-const Prism = require('prismjs')
-const loadLanguages = require('prismjs/components/')
 const { capitializeWords } = require('./helper')
 
-loadLanguages(['shell', 'python'])
+require('./extensions/showdown-prism')
+require('./extensions/showdown-embed-img')
 
 function getMetadata(mdContent) {
   let metadata = {
@@ -73,6 +72,13 @@ async function mdToHtml(
     simpleLineBreaks: true,
     ghMentions: true,
     tables: true,
+    extensions: ['showdown-prism', 'showdown-embed-img'],
+    embedImg: {
+      srcDir: inputDir
+    },
+    prism: {
+      languages: ['shell', 'python', 'powershell', 'sql']
+    }
   })
   converter.setFlavor('github')
 
@@ -142,53 +148,6 @@ async function mdToHtml(
     /{{doc_content}}/g,
     converter.makeHtml(mdContent)
   )
-
-
-  /* Sourcing the image link */
-  const imgRegex = /<img.+src="[~\.]?([^\s\n\.]+\.\w+)".*\/?>/g
-  let rawData = templateData
-  let m = null
-  while ((m = imgRegex.exec(rawData))) {
-    if (m.index === imgRegex.lastIndex) {
-      return
-    }
-
-    let imgData = fs.readFileSync(path.resolve(inputDir, m[1])).toString('base64')
-    imgData = 'data:image/' + path.extname(m[1]).substring(1) + ';base64,' + imgData
-    templateData = templateData.replace(m[1], imgData)
-  }
-
-  /*
-    Adding code highlight by using Prismjs
-  */
-  const codeRegex = /<code\sclass="(.+)">([\w\W]+)<\/code>/g
-  rawData = templateData
-  let curIndex = 0
-  do {
-    const subsetData = rawData.substring(curIndex)
-    startIndex = subsetData.indexOf('<pre>')
-    endIndex = subsetData.indexOf('</pre>') + 6
-
-    if (startIndex > -1 && endIndex < rawData.length) {
-      const temp = subsetData.substring(startIndex, endIndex)
-      curIndex += endIndex
-
-      while ((m = codeRegex.exec(temp)) != null) {
-        if (m.index == codeRegex.unicode) {
-          return
-        }
-        let lang = m[1].indexOf('language-') > -1 ? m[1].split('-')[1] : ''
-        if (lang && lang !== 'text') {
-          const grammer = Prism.languages[lang]
-          // const prismLang = Prism.languages.
-          const highlightCodeBlock = Prism.highlight(m[2], grammer, lang)
-          templateData = templateData.replace(m[2], highlightCodeBlock)
-        }
-      }
-    } else {
-      curIndex = -1
-    }
-  } while (curIndex != -1)
 
   // Minify the html content
 

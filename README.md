@@ -24,6 +24,8 @@ An example content in `example.md`
 [comment]: # (title : <Your Project Title>)
 [comment]: # (author: <Your Author Version>)
 [comment]: # (version: <Your Document Version>)
+[comment]: # (company: <Your Company Name>)
+[comment]: # (client: <Your Client Name>)
 
 # My Project Title
 
