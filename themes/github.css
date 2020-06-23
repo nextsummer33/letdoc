@@ -47,7 +47,7 @@ body {
 }
 
 body #content {
-  max-width: 900px;
+  max-width: 1080px;
   border: 1px solid #e1e4e8;
   padding: 10px 20px;
   border-radius: 2px;
@@ -224,7 +224,7 @@ h1 {
 .header {
   margin: auto;
   margin-bottom: 30px;
-  max-width: 900px;
+  max-width: 1080px;
 }
 
 .header .info > .title {
@@ -253,7 +253,7 @@ h1 {
 }
 
 .footer {
-  max-width: 900px;
+  max-width: 1080px;
   border-top: 1px dotted #e1e4e8;
   padding: 10px 0;
   margin: auto;

@@ -33,7 +33,7 @@
   // this is the best place to put them.
   const fs = require('fs')
   const path = require('path')
-  const imgRegex = /<img.+src="[~\.]?([^\s\n\.]+\.\w+)".*\/?>/g
+  const imgRegex = /<img.+src="([~\.]{1,}?[^\s\n\.]+\.\w+)".*\/?>/g
 
   // The following method will register the extension with showdown
   showdown.extension('showdown-embed-img', function () {
@@ -42,7 +42,7 @@
     return {
       type: 'output', //or output
       filter: function (text, converter, options) {
-        const inputDir = options.embedImg.srcDir
+        let inputDir = options.embedImg.srcDir
 
         if (inputDir) {
           const rawData = text
@@ -52,8 +52,20 @@
               return
             }
 
-            let imgData = fs.readFileSync(path.resolve(inputDir, m[1])).toString('base64')
-            imgData = 'data:image/' + path.extname(m[1]).substring(1) + ';base64,' + imgData
+            let dir = inputDir
+            let temp = m[1]
+            const rgx = RegExp('(.+)\\' + path.sep + '.+')
+            m[1].split(path.sep).forEach(comp => {
+              if (comp === '..') {
+                dir = dir.replace(rgx, '$1')
+                temp = temp.substring(2)
+              } else if (comp === '.') {
+                temp = temp.substring(1)
+              }
+            })
+
+            let imgData = fs.readFileSync(dir+ temp).toString('base64')
+            imgData = 'data:image/' + path.extname(temp).substring(1) + ';base64,' + imgData
             text = text.replace(m[1], imgData)
           }
         }
