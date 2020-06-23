@@ -37,12 +37,16 @@ body {
 
   body #content {
     max-width: 100%;
-    padding: 12px 0 0 0 !important;
+    padding: 13px 0 0 0 !important;
     border: none !important;
   }
 
   .header .spacer {
     height: 260px !important;
+  }
+
+  pre > code {
+    font-size: 85% !important;
   }
 }
 
@@ -145,7 +149,6 @@ blockquote * {
 table {
   border-spacing: 2px;
   display: block;
-  font-size: 14px;
   overflow: auto;
   width: 100%;
   margin-bottom: 16px;
