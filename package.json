@@ -1,6 +1,6 @@
 {
   "name": "letdoc",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Convert a markdown file into html file with github flavor, supports Mermaid, chartjs and syntax highlight.",
   "author": "blackrow33",
   "license": "MIT",
