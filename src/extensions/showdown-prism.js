@@ -34,9 +34,10 @@
   const Prism = require('prismjs')
   const loadLanguages = require('prismjs/components/')
   const codeRegex = /<code\sclass="(.+)">([\w\W]+)<\/code>/g
-  const fixedDoubleEscaped = str => {
-    str = str.replace(/&amp;lt;/g, '&lt;')
-    str = str.replace(/&amp;gt;/g, '&gt;')
+  const unescapeStr = str => {
+    str = str.replace(/&lt;/g, '<')
+    str = str.replace(/&gt;/g, '>')
+    str = str.replace(/&amp;/g, '&')
     return str
   }
   // The following method will register the extension with showdown
@@ -71,8 +72,8 @@
               if (lang && lang !== 'text') {
                 const grammer = Prism.languages[lang]
                 // const prismLang = Prism.languages.
-                const highlightCodeBlock = Prism.highlight(m[2], grammer, lang)
-                text = text.replace(m[2], fixedDoubleEscaped(highlightCodeBlock))
+                const highlightCodeBlock = Prism.highlight(unescapeStr(m[2]), grammer, lang)
+                text = text.replace(m[2], highlightCodeBlock)
               }
             }
           } else {
