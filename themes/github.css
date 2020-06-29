@@ -172,10 +172,6 @@ tr {
   border-top: 1px solid #c6cbd1;
 }
 
-table tr:nth-child(2n) {
-  background-color: #f6f8fa;
-}
-
 /**
  * Others
  */

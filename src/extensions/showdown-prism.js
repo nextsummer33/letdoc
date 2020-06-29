@@ -34,7 +34,11 @@
   const Prism = require('prismjs')
   const loadLanguages = require('prismjs/components/')
   const codeRegex = /<code\sclass="(.+)">([\w\W]+)<\/code>/g
-
+  const fixedDoubleEscaped = str => {
+    str = str.replace(/&amp;lt;/g, '&lt;')
+    str = str.replace(/&amp;gt;/g, '&gt;')
+    return str
+  }
   // The following method will register the extension with showdown
   showdown.extension('showdown-prism', function () {
     'use strict'
@@ -45,7 +49,6 @@
         if (options.prism) {
           loadLanguages(options.prism.languages || ['shell', 'python'])
         }
-
         let rawData = text
         let curIndex = 0
         let startIndex = -1
@@ -69,7 +72,7 @@
                 const grammer = Prism.languages[lang]
                 // const prismLang = Prism.languages.
                 const highlightCodeBlock = Prism.highlight(m[2], grammer, lang)
-                text = text.replace(m[2], highlightCodeBlock)
+                text = text.replace(m[2], fixedDoubleEscaped(highlightCodeBlock))
               }
             }
           } else {
