@@ -23,7 +23,7 @@ function getMetadata(mdContent) {
     const regx = /\[comment\]:\s*#\s*\(.*:(.*)\)/
     for (let i = 0; i < matches.length; i++) {
       const norm = matches[i].trim().toLowerCase()
-      const metaname = ['title', 'author', 'version', 'client', 'company'].find(
+      const metaname = ['title', 'author', 'version', 'client', 'company', 'reference'].find(
         (t) => {
           return norm.indexOf(t) > -1 ? t : ''
         }
@@ -128,6 +128,18 @@ async function mdToHtml(
     /{{doc_author}}/g,
     capitializeWords(metadata.author || 'Your Name')
   )
+  if (metadata.reference) {
+    templateData = templateData.replace(
+      /{{doc_ref}}/g,
+      metadata.reference.toUpperCase()
+    )
+  } else {
+    templateData = templateData.replace(
+      'Reference:&nbsp;<strong>{{doc_ref}}</strong> <br />',
+      ''
+    )
+  }
+
   templateData = templateData.replace(
     /{{doc_company}}/g,
     capitializeWords(metadata.company || 'Example Company')
