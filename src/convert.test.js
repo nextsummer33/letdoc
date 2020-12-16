@@ -11,8 +11,8 @@ test('Markdown content should be convert into html', async () => {
 
 test('Generated html should replace the metadata in the markdown, such as title, author name, version', async () => {
   const htmlContent = await mdToHtml(titledMD)
-  expect(htmlContent.indexOf('<h1 class="title">My Title</h1>')).toBeGreaterThan(-1)
-  expect(htmlContent.indexOf('Author:&nbsp;<strong>Example</strong>')).toBeGreaterThan(-1)
+  expect(htmlContent.indexOf('<h1 class="title">my title</h1>')).toBeGreaterThan(-1)
+  expect(htmlContent.indexOf('Author:&nbsp;<strong>example</strong>')).toBeGreaterThan(-1)
   expect(htmlContent.indexOf('Version:&nbsp;<strong>v1.0</strong>')).toBeGreaterThan(-1)
   expect(htmlContent.indexOf(`Date:&nbsp;<strong>${(new Date()).toLocaleDateString()}</strong>`)).toBeGreaterThan(-1)
 })

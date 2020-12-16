@@ -118,7 +118,7 @@ async function mdToHtml(
   // substitute the template variable with actual content
   templateData = templateData.replace(
     /{{doc_title}}/g,
-    capitializeWords(metadata.title)
+    metadata.title
   )
   templateData = templateData.replace(
     /{{doc_version}}/g,
@@ -126,7 +126,7 @@ async function mdToHtml(
   )
   templateData = templateData.replace(
     /{{doc_author}}/g,
-    capitializeWords(metadata.author || 'Your Name')
+    metadata.author || 'Your Name'
   )
   if (metadata.reference) {
     templateData = templateData.replace(
@@ -142,11 +142,11 @@ async function mdToHtml(
 
   templateData = templateData.replace(
     /{{doc_company}}/g,
-    capitializeWords(metadata.company || 'Example Company')
+    metadata.company || 'Example Company'
   )
   templateData = templateData.replace(
     /{{doc_client}}/g,
-    capitializeWords(metadata.client || 'My Client')
+    metadata.client || 'My Client'
   )
   templateData = templateData.replace(
     /{{doc_date}}/g,
