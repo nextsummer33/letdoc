@@ -22,7 +22,7 @@ function getMetadata(mdContent) {
   if (matches.length) {
     const regx = /\[comment\]:\s*#\s*\(.*:(.*)\)/
     for (let i = 0; i < matches.length; i++) {
-      const norm = matches[i].trim().toLowerCase()
+      const norm = matches[i].trim()
       const metaname = ['title', 'author', 'version', 'client', 'company', 'reference'].find(
         (t) => {
           return norm.indexOf(t) > -1 ? t : ''
