@@ -1,7 +1,7 @@
 {
   "name": "letdoc",
-  "version": "0.2.0",
-  "description": "Convert a markdown file into html file with github flavor, supports Mermaid, chartjs and syntax highlight.",
+  "version": "0.3.0",
+  "description": "Convert a markdown file into html file with the github flavor, supports Mermaid, chartjs and syntax highlight.",
   "author": "blackrow33",
   "license": "MIT",
   "homepage": "https://github.com/blackcrow33/letdoc",
@@ -14,14 +14,13 @@
     "email" : "ku4ncheang@gmail.com"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-cli": "^8.5.1-2",
+    "@mermaid-js/mermaid-cli": "^8.11.4",
     "chalk": "^4.0.0",
-    "chart.js": "2.7.3",
+    "chart.js": "2.9.4",
     "commander": "^5.1.0",
-    "html-docx-js": "^0.3.1",
     "html-minifier": "^4.0.0",
-    "prismjs": "^1.20.0",
-    "puppeteer": "^2.0.0",
+    "prismjs": "^1.24.1",
+    "puppeteer": "^10.2.0",
     "sharp": "^0.25.3",
     "showdown": "^1.9.1",
     "svgo": "^1.3.2"

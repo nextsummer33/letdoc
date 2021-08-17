@@ -5,7 +5,6 @@ const chalk = require('chalk')
 const commander = require('commander')
 const puppeteer = require('puppeteer')
 const sharp = require('sharp')
-const docxjs = require('html-docx-js')
 
 const {
   mermaidPipeline,
@@ -48,7 +47,7 @@ commander
   .option(
     '-f, --format [format]',
     'Format of output file, HTML, PNG and PDF are supported. Default: html',
-    /^html|png|pdf|docx$/,
+    /^html|png|pdf$/,
     'html'
   )
   .option(
@@ -149,7 +148,7 @@ const main = async () => {
           .png()
           .toBuffer()
       } else if (format === 'docx') {
-        outData = docxjs.asBlob(outData)
+        //outData = docxjs.asBlob(outData)
       } else {
         outData = await page.pdf({
           format: 'A4',
