@@ -25,8 +25,8 @@ commander
   .option(
     '-th, --template-theme [templateTheme]',
     'Theme of the flavor style, could be github, dark or neutral. Optional. Default: github',
-    /^github|dark|neutral$/,
-    'github'
+    /^default|dark|neutral$/,
+    'default'
   )
   .option(
     '-mt, --mermaid-theme [mermiadTheme]',
