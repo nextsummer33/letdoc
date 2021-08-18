@@ -61,11 +61,6 @@ const myCSS = 'body { font: 14px arial; }'
 let input = ''
 let output = ''
 
-const error = (msg) => {
-  console.log(chalk.red(`\n${msg}\n`))
-  process.exit(1)
-}
-
 // normalize args
 
 const main = async () => {
@@ -156,7 +151,7 @@ const main = async () => {
           displayHeaderFooter: true,
           headerTemplate: '<div></div>',
           footerTemplate:
-            '<div style="font-size: 8px; text-align: center; width: 100%;"><span>Page</span> - <span class="pageNumber"></span></div>',
+            '<div style="font-size: 11px; text-align: center; width: 100%;"><span>Page</span> - <span class="pageNumber"></span></div>',
           margin: { top: '50', left: '30', bottom: '70', right: '30' },
         })
       }
@@ -166,7 +161,8 @@ const main = async () => {
 
     fs.writeFile(output, outData, { encoding: 'utf8', flag: 'w' }, (err) => {
       if (err) {
-        error(error)
+        console.log(`\n${chalk.red(err)}\n`)
+        process.exit(1)
       } else {
         console.log(
           `\nConverted file is generated at '${chalk.green(output)}'\n`
@@ -175,7 +171,8 @@ const main = async () => {
       }
     })
   } catch (err) {
-    error(err)
+    console.log(`\n${chalk.red(err)}\n`)
+    process.exit(1)
   }
 }
 

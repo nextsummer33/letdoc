@@ -691,6 +691,8 @@ body {
     line-height: normal;
 }
 
-#content > h1 {
-    border: none;
+@media only print {
+  .spacer {
+    height: 200px;
+  }
 }
