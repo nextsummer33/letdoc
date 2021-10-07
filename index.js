@@ -123,7 +123,7 @@ const main = async () => {
     // mdContent = await svgoPipeline(mdContent)
 
     // Convert the markdown into html
-    let outData = await mdToHtml(mdContent, {
+    let outData = mdToHtml(mdContent, {
       template,
       theme: templateTheme,
       logo,

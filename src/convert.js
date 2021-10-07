@@ -35,7 +35,7 @@ function getMetadata(mdContent) {
   return metadata
 }
 
-async function mdToHtml(
+function mdToHtml(
   mdContent,
   options = {
     template: 'default',
