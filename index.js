@@ -5,7 +5,6 @@ const chalk = require('chalk')
 const commander = require('commander')
 const puppeteer = require('puppeteer')
 const sharp = require('sharp')
-const docxjs = require('html-docx-js')
 
 const {
   mermaidPipeline,
@@ -48,7 +47,7 @@ commander
   .option(
     '-f, --format [format]',
     'Format of output file, HTML, PNG and PDF are supported. Default: html',
-    /^html|png|pdf|docx$/,
+    /^html|png|pdf$/,
     'html'
   )
   .option(
@@ -121,7 +120,7 @@ const main = async () => {
       height: 400,
     })
 
-    mdContent = await svgoPipeline(mdContent)
+    // mdContent = await svgoPipeline(mdContent)
 
     // Convert the markdown into html
     let outData = await mdToHtml(mdContent, {
@@ -131,7 +130,7 @@ const main = async () => {
       inputDir: path.dirname(input)
     })
 
-    if (['png', 'pdf', 'docx'].indexOf(format) > -1) {
+    if (['png', 'pdf'].indexOf(format) > -1) {
       const browser = await puppeteer.launch()
       const page = await browser.newPage()
       page.setViewport({
@@ -148,8 +147,6 @@ const main = async () => {
         outData = await sharp(outData)
           .png()
           .toBuffer()
-      } else if (format === 'docx') {
-        outData = docxjs.asBlob(outData)
       } else {
         outData = await page.pdf({
           format: 'A4',

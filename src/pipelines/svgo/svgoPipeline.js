@@ -1,4 +1,4 @@
-const SVGO = require('svgo/lib/svgo')
+const svgo = require('svgo/lib/svgo')
 const configs = require('./configs')
 
 function decodeStr(str) {
@@ -9,8 +9,6 @@ function decodeStr(str) {
 }
 
 async function svgoPipeline(mdContent) {
-  const svgo = new SVGO(configs)
-
   const regex = /<svg.*>.+<\/svg>/g
   let m;
   let temp = mdContent
@@ -28,7 +26,7 @@ async function svgoPipeline(mdContent) {
       // solving the issue of following link, since <br/> is valid tag instead of <br>
       // https://github.com/mermaid-js/mermaid/issues/614
       svg = svg.replace(/<br>/g, '<br\/>')
-      const optsvg = await svgo.optimize(svg, {})
+      const optsvg = svgo.optimize(svg, configs)
       // fixed the <br /> convert into <br></br>
       // other the browser will treat it as <br><br> double link breaks
       const finalStr = decodeStr(optsvg.data.replace(/<br><\/br>/g, "<br>"))
