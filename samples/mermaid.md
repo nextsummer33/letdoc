@@ -38,8 +38,7 @@ sequenceDiagram
     John-->>Alice: Great!
     John->>Bob: How about you?
     Bob-->>John: Jolly good!
-&#x60;&#x60;&#x60;
-</code></pre>
+&#x60;&#x60;&#x60;</code></pre>
 
 ```mermaid
 sequenceDiagram
@@ -329,8 +328,7 @@ classDiagram
     Class01 : int chimp
     Class01 : int gorilla
     Class08 &#x3C;--&#x3E; C2: Cool label
-&#x60;&#x60;&#x60;
-</code></pre>
+&#x60;&#x60;&#x60;</code></pre>
 
 ```mermaid
 classDiagram

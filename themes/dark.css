@@ -1,12 +1,16 @@
 body {
-  font-size: 16px;
-  line-height: 1.5;
-  color: #111;
-  background-color: white;
+  /* font-size: 16px; */
+  /* //line-height: 1.5; */
+  color: white;
+  background-color: #111111;
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   padding: 30px 0;
-  font-family: Helvetica, 'Open Sans', Arial, sans-serif;
+  font-family: Helvetica, Aria, 'Open Sans', sans-serif;
+}
+
+p {
+  line-height: 1.5;
 }
 
 @media only screen and (max-width: 600px) {
@@ -17,7 +21,6 @@ body {
   body #content {
     padding: 30px 0 0 0 !important;
     border: none !important;
-    border-top: 1px dotted #e1e4e8 !important;
   }
 
   .header .info > .title {
@@ -51,8 +54,8 @@ body {
 }
 
 body #content {
-  max-width: 1080px;
-  border: 1px solid #e1e4e8;
+  max-width: 800px;
+  /* border: 1px solid #e1e4e8; */
   padding: 10px 20px;
   border-radius: 2px;
   margin: auto
@@ -182,7 +185,7 @@ img {
 
 p {
   line-height: 24px;
-  color: #24292e;
+  color: white;
 }
 
 ul {
@@ -190,7 +193,7 @@ ul {
 }
 
 li {
-  color: #24292e;
+  color: white;
 }
 
 li + li {
@@ -198,7 +201,7 @@ li + li {
 }
 
 * {
-  color: #24292e;
+  color: white;
 }
 
 a:visited {
@@ -208,7 +211,7 @@ a:visited {
 h1,
 h2,
 h3 {
-  color: #111;
+  color: white;
   /* Darker */
 }
 
@@ -223,7 +226,7 @@ h1 {
 .header {
   margin: auto;
   margin-bottom: 30px;
-  max-width: 1080px;
+  max-width: 800px;
 }
 
 .header .info > .title {
@@ -252,7 +255,7 @@ h1 {
 }
 
 .footer {
-  max-width: 1080px;
+  max-width: 800px;
   border-top: 1px dotted #e1e4e8;
   padding: 10px 0;
   margin: auto;
@@ -265,6 +268,11 @@ h1 {
 
 .mermaid-container.erdiagram text {
   font-size: 0.8em !important;
+}
+
+.mermaid-container {
+  width: 100%;
+  margin: auto;
 }
 
 .mermaid-container svg {

@@ -7,15 +7,15 @@ async function mermaidPipeline(
   options = {
     config,
     css,
-    width: 900,
-    height: 900,
+    width: 1000,
+    height: 1000,
     deviceScaleFactor: 1,
     imageFormat: false,
   }
 ) {
   const { config, css, width, height, deviceScaleFactor, imageFormat } = options
   // Get all the mermaid code block in the markdown content
-  const mermaidCtx = mdContent.match(/```mermaid\n*([^`]+)\n*```/g)
+  const mermaidCtx = mdContent.match(/```mermaid *(?:\S+)?(?:\s+)(?:[^`]+)\s*```/g)
 
   if (mermaidCtx && mermaidCtx.length) {
     // Running a puppeteer and headless chromiumn
@@ -27,8 +27,10 @@ async function mermaidPipeline(
 
     for (let i = 0; i < mermaidCtx.length; i++) {
       // extract the context in the mermaid code block
-      const ctx = mermaidCtx[i].replace(/```mermaid\n*([^`]+)\n*```/, '$1')
-      const type = mermaidCtx[i].match(/```mermaid\n*([^\s:]+)\n*[^`]*```/)[1]
+      const ctx = mermaidCtx[i].replace(/```mermaid *(\S+)?(?:\s+)([^`]+)\s*```/, '$2')
+      const subMatches = mermaidCtx[i].match(/```mermaid *(\S+)?(?:\s+)([^\s:]+)\s*[^`]*```/)
+      const inlineStyle = subMatches[1] ? `style="${subMatches[1].trim()}"` : ''
+      const type = subMatches[2]
       // Calling mermaid api to get the rendered svg content.
       let svg = await page.$eval(
         'head',
@@ -62,7 +64,7 @@ async function mermaidPipeline(
       svg = svg.replace(/[\.\w\s\-\#\>\~]*{\s*!important;\s*}/g, '')
       // checking the existent of viewbox attribute
       if (svg.indexOf('viewBox') === -1) {
-        const matches = /<svg[^>]+height="(\d+)".+/.exec(svg) || []
+        const matches = /<svg[^>]+height="(\d+\.\d+)".+/.exec(svg) || []
         let height = matches.length > 1 ? matches[1] : 0
         svg = svg.replace(
           /<svg(.+)/,
@@ -72,6 +74,7 @@ async function mermaidPipeline(
       // It causing the svgo mininizer could not parse the svg correctly
       // remove the width attribute, using the default width for svg
       svg = svg.replace(/(<svg[^>]+)width="[\d%px\.]+"(.+)/g, `$1$2`)
+      svg = svg.replace(/(<svg[^>]+)height="[\d%px\.]+"(.+)/g, `$1$2`)
 
       if (imageFormat) {
         const clip = await page.$eval('#container', (container, svg) => {
@@ -96,7 +99,7 @@ async function mermaidPipeline(
 
       mdContent = mdContent.replace(
         /```mermaid[^`]*```/,
-        `<div class="mermaid-container ${type.toLowerCase()}">${svg}</div>`
+        `<div class="mermaid-container ${type.toLowerCase()}" ${inlineStyle}>${svg}</div>`
       )
     }
   }
