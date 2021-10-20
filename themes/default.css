@@ -8,9 +8,8 @@ body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   color: #333;
-  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans,
-    sans-serif;
-  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 1em;
   line-height: 1.6;
   word-wrap: break-word;
 }
@@ -50,7 +49,7 @@ code,
 kbd,
 pre {
   font-family: monospace, monospace;
-  font-size: 1em;
+  font-size: 0.8em;
 }
 
 input {
@@ -666,13 +665,14 @@ kbd {
 }
 
 body {
-  max-width: 800px;
+  max-width: 1200px;
   padding: 20px;
   margin: auto;
 }
 
 .title {
-    border: none;
+  font-size: 2.4em;
+  border: none;
 }
 
 .spacer {
@@ -685,14 +685,18 @@ body {
 
 .mermaid-container {
     margin: auto;
-} 
+}
 
 .mermaid-container > svg {
     line-height: normal;
 }
 
 @media only print {
-  .spacer {
-    height: 200px;
-  }
+    .spacer {
+        height: 200px
+    }
+
+    .disclaimer {
+        font-style: italic;
+    }
 }

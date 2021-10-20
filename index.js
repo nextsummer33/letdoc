@@ -9,7 +9,6 @@ const sharp = require('sharp')
 const {
   mermaidPipeline,
   chartjsPipeline,
-  svgoPipeline,
 } = require('./src/pipelines')
 const { mdToHtml } = require('./src/convert')
 const pkg = require('./package.json')
@@ -61,7 +60,9 @@ const myCSS = 'body { font: 14px arial; }'
 let input = ''
 let output = ''
 
-// normalize args
+const error = (msg) => {
+  console.log(`${chalk.red(msg)}`)
+}
 
 const main = async () => {
   const {
@@ -99,7 +100,6 @@ const main = async () => {
       height: 900,
       deviceScaleFactor: parseInt(scale || 1, 10),
       css: myCSS,
-      imageFormat: format === 'docx',
       config: configFile || {
         theme: mermaidTheme,
         noteFontFamily: 'arial',
