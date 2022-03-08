@@ -296,7 +296,6 @@ h2 {
   padding-bottom: 0.3em;
   font-size: 1.75em;
   line-height: 1.225;
-  border-bottom: 1px solid #eee;
 }
 
 h2 .anchor {
@@ -692,8 +691,12 @@ body {
 }
 
 @media only print {
+    body {
+      font-size: 0.85em;
+    }
+
     .spacer {
-        height: 200px
+        height: 200px;
     }
 
     .disclaimer {
